@@ -1,0 +1,9 @@
+SPMLF
+SPX
+statistcal
+Gaussianity
+ARMA
+ARIMA
+neccessity
+detrended
+ValueWarning
