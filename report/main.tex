@@ -1,39 +1,34 @@
 \documentclass[a4paper, twoside]{report}
 
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{commath}
+\usepackage{cancel}
+\usepackage{breqn}
+\usepackage[euler]{textgreek}
+\usepackage{multicol}
+\usepackage[labelfont=bf, margin=1cm]{caption}
+\usepackage{hyperref}
+\usepackage[american]{circuitikz}
+\usepackage{siunitx}
+\usepackage[section]{placeins}
 \usepackage[english]{babel}
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{listings}
-\usepackage{hyperref}
 \hypersetup{colorlinks=false}
 \usepackage{lscape}
 \usepackage{subfigure}
-\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[ruled, vlined]{algorithm2e}
 \usepackage{verbatim}
+\usepackage[utf8]{inputenc}
 \usepackage{float}
-\usepackage{tikz}
-%\usepackage{algpseudocode}
-\usepackage{tabularx}
-\usepackage{multirow}
-\usepackage{makecell}
-\usepackage{appendix}
-\usepackage{amssymb}% \varnothing
-% \usepackage[legalpaper, potrait, margin=1in]{geometry}
-\usepackage{gensymb}
-\usepackage{amsthm}
-\usepackage{color,soul}
-\usepackage{array}
-% \usepackage[dvipsnames]{xcolor}
-\usepackage{arydshln}
-\usepackage{adjustbox}
-\usepackage{titlesec}
+\usepackage{xcolor}
+\setlength\parindent{0pt}
 
-\setlength\dashlinedash{0.2pt}
-\setlength\dashlinegap{1.5pt}
-\setlength\arrayrulewidth{0.3pt}
+\DeclareUnicodeCharacter{2212}{-}
 
 \begin{document}
     % The Title, Author Name, Date, and abstract go here
@@ -42,5 +37,9 @@
     \date{\today}
     \maketitle
 
-
+    \input{part_1/index.tex}
+    \input{part_2/index.tex}
+    \input{part_3/index.tex}
+    \input{part_4/index.tex}
+    \input{part_5/index.tex}
 \end{document}

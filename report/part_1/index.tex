@@ -1,0 +1,269 @@
+\chapter{Regression Methods}
+
+\section{Processing stock price data in Python}
+
+\subsection{Log Price Transform}
+
+\autoref{fig:part_1:norm_v_log_price} shows the SPX index since the 1930s, the left shows the absolute value while the right shows the log value.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_4_0.pdf}
+    \caption{Normal Vs. Log Prices for SPX Index.}
+    \label{fig:part_1:norm_v_log_price}
+\end{figure}
+
+\subsection{Sliding Window price time-series}
+
+\paragraph{Mean}: \autoref{fig:part_1:sw_mean_spx} shows the sliding window time series for the SPX index. The graph on the left is the absolute value and has no stationarity as its mean grows exponentially from the 1930s to the 1990s. An argument could be made that it became somewhat stationary between the late 1990s and the mid 2010s however the variance of such a distribution would be too high to make any meaningful conclusions. 
+
+The log graph is also non-stationary, however its rise in mean is much smoother than the alternative. The segment between the late 1990s and mid 2010s could also been seen as stationary with a much lower variance than before.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_6_0.pdf}
+    \caption{Mean of sliding window of SPX Index}
+    \label{fig:part_1:sw_mean_spx}
+\end{figure}
+
+\paragraph{Standard Deviation}: The standard deviation graphs, in \autoref{fig:part_1:sw_std_spx}  much more stationarity than the mean graphs, especially the log SPX index. Said, graph seems to have a constant means around 0.75 with a large variance. The absolute graph, shown on the left, has an increasing mean making it essentially non-stationary.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_8_0.pdf}
+    \caption{s.d. of sliding window of SPX Index}
+    \label{fig:part_1:sw_std_spx}
+\end{figure}
+
+\subsection{Simple and Log Returns}
+
+\autoref{fig:part_1:returns_spx} shows the simple and log returns of the SPX index.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_10_0.pdf}
+    \caption{Returns of SPX Index}
+    \label{fig:part_1:returns_spx}
+\end{figure}
+
+\paragraph{Sliding Window — Mean}: As before, we take a sliding window of size 252, of the data and plot the mean and s.d. \autoref{fig:part_1:sw_mean_returns} shows the mean of the sliding window for both simple and log returns. As can be seen, the mean of both graphs is much more constant meaning that they have more stationarity than the price graphs shown before. They are also much more similar to each other than the log price and normal price graphs were.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_12_0.pdf}
+    \caption{Mean of Sliding Window of SPX Index}
+    \label{fig:part_1:sw_mean_returns}
+\end{figure}
+
+\paragraph{Sliding Window — Standard Deviation}: As with the mean, the standard deviation plots, shown in \autoref{fig:part_1:sw_std_returns}, of the returns show more stationarity than the price plots.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_14_0.pdf}
+    \caption{Standard Deviation of Sliding Window of SPX Index}
+    \label{fig:part_1:sw_std_returns}
+\end{figure}
+
+\subsection{Advantages of Log Returns}
+
+If we assume prices in the short term are distributed log-normally, then the log return is normally distributed. This is advantageous because many statistcal and signal processing methods assume Gaussianity. Log returns are also time-additive which means that when calculating the compounding return of a sequence of trades the calculation becomes much simpler. If we use the identity:
+\[ log(1+r_i) = log(\frac{p_i}{p_{i-1}})  = log(p_i) - log(p_{i-1}) \] 
+then we can simplify as such: 
+\[\sum_{i}^{n} log(1+r_i) = log(1+r_1) + log(1+r_2) + ... + log(1+r_n) = log(p_n) - log(p_0)\]
+
+To confirm the Gaussianity of data we may use the Jarque-Bera test, which returns a statistic. The closer this statistic, JB, is to zero the more normal the distribution of data points is. \autoref{fig:part_1:jb_tests} shows that as more data points are introduced the distribution becomes less Gaussian which is to be expected as the mean of the SPX index is constantly increasing.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=1\textwidth]{part_1/images/SPMLF_17_0.pdf}
+    \caption{Jarque-Bera tests with varying data points}
+    \label{fig:part_1:jb_tests}
+\end{figure}
+
+
+\subsection{Simple vs Log Return: Calculation}
+Given the example, that if we were to purchase a stock for £1 and the next day the value goes up to £2 and the day after it goes back to £1 we can calculate the simple and log returns over the two days. The simple returns would be [1, -0.5] (1st element is the returns for day 1, 2nd element is returns for day 2). The log returns is [0.69, -0.69]. By summing the log returns we get 0, which tells us that the value of the stock hasn't changed over two days which is more information than the simple returns. 
+
+\subsection{Simple vs Log Return: Simple Returns Adv.}
+Since log-normality of data points only hold for short time periods we can only use log returns for short-term analysis. Additionally, while log returns are time-additive they cannot be added across assets, thus we need simple returns for portfolio analysis.
+
+\section{ARMA vs. ARIMA Models for Financial Applications}
+
+\subsection{ARMA vs ARIMA Suitability}
+
+In this section we take the closing prices for the S\&P 500 over the last 4 years and follow the process in Section 1.1.1 to find the log of the prices.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_21_0.pdf}
+    \caption{S\&P 500 over the last 4 years}
+    \label{fig:part_1:snp_log_closing}
+\end{figure}
+
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_22_0.pdf}
+    \caption{Statistics from Sliding Window on S\&P 500}
+    \label{fig:part_1:snp_sw}
+\end{figure}
+
+As can be seen from the Figures \ref{fig:part_1:snp_log_closing} and \ref{fig:part_1:snp_sw} none of the data is stationary and thus an ARIMA model would be more appropriate to analyse this data.
+
+\subsection{1.2.2 ARMA(1,0) Model}
+\autoref{fig:part_1:snp_arma} shows the predicted signal from an ARMA model based on the data above. In order to better show how the data relates to the true value, the true value was overlaid on the graph, and only small window of time is shown. As you can see the model tends to lag behind the true value, but generally predicts the correct trends. In reality this  day delay would make the model only useful for long term modelling as any individuals interested in predicting values for a day by day basis would end up missing daily peaks and troughs. Finally, this model would also be unable to accommodate for large fluctuations in the market.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_25_1.pdf}
+    \caption{ARMA Model on S\&P 500}
+    \label{fig:part_1:snp_arma}
+\end{figure}
+
+\subsection{ARIMA(1,1,0) Model}
+Modelling the same data, now with an ARIMA(1,1,0) model, shows a similar result. This model doesn't have a large initial prediction like ARMA's, but does lag behind by a day compared to the true value, rendering it somewhat unusable for day trading. On the plus side the AR parameter for this model is -0.00875, which is less than 1 meaning that the prediction has some stationarity to it.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_27_1.pdf}
+    \caption{ARIMA Model on S\&P 500}
+    \label{fig:part_1:snp_arima}
+\end{figure}
+
+\subsection{Log Prices and ARIMA}
+
+To evaluate the neccessity of using log prices when using an ARIMA model, we will create an ARIMA model using the normal price values and compare the difference in mean residuals. \autoref{fig:part_1:snp_arima_normal} shows how the ARIMA model using normal prices performs. Since the range of data for the log ARIMA model and normal ARIMA model are vastly different, comparing the absolute value of the residuals wouldn't yield and helpful information. Instead, we think of the residuals as the error value, and divide them by the true value to find the error percentage, this then allows for a much more meaningful comparison. The ARIMA model based on the log values has an average error of 0.076\% whereas the ARIMA model based on the normal values has an average error of 0.58\%, nearly an order of magnitude higher. Thus, in order to keep residuals much more accurate we need to use log prices.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_29_1.pdf}
+    \caption{ARIMA Model on S\&P 500 using normal price values}
+    \label{fig:part_1:snp_arima_normal}
+\end{figure}
+
+\section{VAR Models}
+\subsection{Setup}
+In order to simplify the equation:  
+\[y_t = c + A_1y_{t-1} + A_2y_{t−2} + \cdots + A_py_{t−p} + e_t\] 
+into  
+\[Y = BZ + U\]  
+We must reason what the four matrices must be.  
+  
+$Y$ is a list of all outputs for all variables at all-time points:  
+\[Y = \begin{bmatrix} y_t & y_{t+1} & \cdots & y_{t+T} \end{bmatrix} \in \mathbb{R}^{K\times T}\]
+Each $y_t$ is a vector of size $K$, which is equal to the number of variables.
+  
+$B$ is a matrix containing all the coefficients represented as $A$ in the original equation along with the constant $c$:  
+\[B = \begin{bmatrix} c & A_1 & A_2 & \cdots & A_p \end{bmatrix} \in \mathbb{R}^{K \times (KP + 1)}\]
+  
+$Z$ contains all the values of $y$ at different time points:  
+\[Z = \begin{bmatrix}
+    1 & 1 & \cdots & 1 \\
+    y_{t-1} & y_{t} & \cdots & y_{t-1+T} \\
+    y_{t-2} & y_{t-1} & \cdots & y_{t-2+T} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    y_{t-p} & y_{t-p+1} & \cdots & y_{t-p+T} \\
+\end{bmatrix} \in \mathbb{R}^{(KP + 1) \times T}\]
+
+Finally, $U$ contains all the error terms represented by $e_t$ in the original equation:  
+\[U = \begin{bmatrix} e_t & e_{t+1} & \cdots & e_{t+T} \end{bmatrix} \in \mathbb{R}^{K\times T}\]  
+
+Thus, we can simply use the concise matrix form: $Y = BZ + U$.  
+Where:  
+  
+\[Y \in \mathbb{R}^{K\times 1}\]
+
+\[B \in \mathbb{R}^{K \times (KP + 1)}\]
+
+\[Z \in \mathbb{R}^{(KP + 1) \times T}\]
+
+\[U \in \mathbb{R}^{K\times 1}\]
+
+
+\subsection{Optimal Coefficient}
+
+To find the solution to $Y = BZ + U$, we can use a multi-variate least-squares method and attempt to minimize $U$ which contains the error terms. Thus, we rearrange and minimize $UU^T$.
+  
+\[min\:UU^T = (Y-BZ)(Y-BZ)^T\]  
+\[min\:UU^T = YY^T - 2YZ^TB^T + BZZ^TB^T\]   
+\[\frac{\partial UU^T}{\partial B} = 2BZZ^T - 2YZ^T = 0\]   
+\[ BZZ^T = YZ^T \]   
+thus the optimal value for $B$ is:  
+\[B = YZ^T(ZZ^T)^{-1}\]  
+
+\subsection{Eigenvalues of a VAR}
+
+A simple VAR(1) process can be written as:  
+\[y_t = Ay_{t-1} + e_t\]
+By expanding $y_{t-1}$, $p$ times recursively we can represent the equation as:  
+\[y_t = A^py_{t_p} + \sum_i^{p-1}A^ie_{t-i}\]
+Since it follows that $A^px = \lambda^px$ where $\lambda$ is the eigenvalue of $A$, if an eigenvalue of A is larger than 1 then $y$ will very quickly go to infinity.
+
+\subsection{Portfolio Optimization}
+
+In this section we investigate method of analysing portfolios to see if they are diversified. In the first part we shall take five stocks from the SNP(CAG, MAR, LIN, HCP and MAT) and fit a VAR(1) model on them. \autoref{fig:part_1:port} shows the values of the stocks between 2015 and 2019, as well as the detrended stock values which essentially only plots the variance around a 66 rolling day mean. LIN only started trading in mid 2018 and thus all the detrended data starts from that point as well.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_1/images/SPMLF_35_0.pdf}
+    \caption{Portfolio Data}
+    \label{fig:part_1:port}
+\end{figure}
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{l|lllll}
+        & CAG      & MAR     & LIN     & HCP     & MAT     \\ \hline
+    CAG & 0.9748   & 0.0392  & -0.1234 & 0.0167  & 0.0179  \\ 
+    MAR & -0.0053  & 0.9111  & -0.0502 & -0.0113 & 0.0049  \\ 
+    LIN & 0.0120   & -0.0362 & 0.8313  & -0.0042 & -0.0154 \\ 
+    HCP & -.0.0559 & 0.0303  & -0.2430 & 0.9098  & -0.0219 \\ 
+    MAT & 0.0702   & -0.0102 & 0.5045  & 0.0314  & 0.9726 
+    \end{tabular}
+    \caption{Parameters for VAR Model}
+    \label{table:part_1:params_var}
+\end{table}
+
+\autoref{table:part_1:params_var} shows the parameters for the model, or in terms of the equations we talked about previously, the matrix $A$. The diagonal has the highest value across the board, which makes sense because the lagged value of a single stock has the biggest impact on itself i.e. the price of CAG at $t-1$ has the most impact on its price at $t$ than all the other stocks. Thus, we can read this matrix as somewhat of a covariance matrix, where higher magnitudes indicate more dependence between stocks and the sign represents positive or negative correlation.
+
+One rule of covariance matrices is that the eigenvalues of the matrix is equal to the variance across that eigenvector, thus we can deduce that if the eigenvalues are all similar there is very little correlation across the entire data.
+  
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{l|l|l}
+    Min      & Max     & Mean     \\ \hline
+    0.942   & 0.979  & 0.966
+    \end{tabular}
+    \caption{Eigenvalues of \autoref{table:part_1:params_var}}
+    \label{table:part_1:VAR_eig}
+\end{table}
+
+As can be seen, in \autoref{table:part_1:VAR_eig}, this portfolio is largely uncorrelated and thus can be considered diversified which is what we want from a portfolio.
+
+\subsection{Sector-based portfolios}
+Generally speaking having creating a portfolio with only one sector is ill-advised due to the stocks having similar risks. For example a legislation on oil companies may cause the stock of all oil companies to fall. In mathematical terms we would say that sector specific portfolios are highly correlated. Using a similar methodology from the previous question we can verify this claim by fitting stocks from a single sector on a VAR and then finding the eigenvalues of the model parameters.
+
+\autoref{table:part_1:sector_eig} shows the result of such analysis and as can be seen, the variance of eigenvalues for most sectors is extremely high, thus proving the stocks within that portfolio are highly correlated. The exception to this rule would be Communication Services, Real Estate, and Energy which seem to be less correlated than the other sectors but still more than the example portfolio in the previous question.
+
+Thus, if one did want to diversify their portfolio and reduce correlation across stocks, it would be better to choose stocks from differing industries
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{l|l|l|l}
+    Sector & Min      & Mean     & Max     \\ \hline
+    Industrials & 0.404   & 0.781  & 0.984  \\
+    Health Care	& 0.022   & 0.621  & 0.994  \\
+    Information Technology	& 0.437  & 0.818  & 0.985  \\
+    Communication Services	& 0.758  & 0.920  & 0.969  \\
+    Consumer Discretionary	& 0.555   & 0.849  & 0.984  \\
+    Utilities	& 0.064   & 0.659  & 0.986  \\
+    Financials	& 0.152  & 0.637  & 0.996 \\
+    Materials		& 0.026   & 0.688  & 0.986 \\
+    Real Estate		& 0.774  & 0.918  & 0.976  \\
+    Consumer Staples		& 0.570   & 0.863  & 0.981  \\
+    Energy		& 0.837  & 0.927 & 0.981  \\
+    \end{tabular}
+    \caption{Eigenvalues of Sector-based portfolios}
+    \label{table:part_1:sector_eig}
+\end{table}

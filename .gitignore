@@ -9,3 +9,8 @@ report/main.log
 report/main.out
 report/main.pdf
 report/main.synctex.gz
+report/part_1/images/*
+report/part_2/images/*
+report/part_3/images/*
+report/part_4/images/*
+SPMLF.tex

@@ -7,3 +7,5 @@ ARIMA
 neccessity
 detrended
 ValueWarning
+Jarque-Bera
+ARMIA
