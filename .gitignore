@@ -2,3 +2,10 @@ DataFiles/*
 SPMLF_files/*
 SPMLF.pdf
 FSPML.ipynb
+report/main.aux
+report/main.fdb_latexmk
+report/main.fls
+report/main.log
+report/main.out
+report/main.pdf
+report/main.synctex.gz
