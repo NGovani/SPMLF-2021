@@ -9,3 +9,5 @@ detrended
 ValueWarning
 Jarque-Bera
 ARMIA
+modifed
+CAPM

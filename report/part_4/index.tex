@@ -1,0 +1,64 @@
+\chapter{Robust Statistics and Non-Linear Models}
+\section{Data Import and Exploratory Data analysis}
+\subsection{Stock Statistics}
+
+Tables \ref{table:part_4:aapl_stats}, \ref{table:part_4:dji_stats}, \ref{table:part_4:IBM_stats} and \ref{table:part_4:JPM_stats} show the key summary statistics for their respective stock.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|l|l|l|l}
+    Column     & Mean     & Standard Deviation  & Skew    & Kurtosis  \\ \hline
+    Open       & 187.7    & 22.14               & 0.2599  & -0.9126   \\ 
+    High       & 189.5    & 22.28               & 0.3003  & -0.9246  \\ 
+    Low        & 185.8    & 22.01               & 0.2204  & -0.9176  \\ 
+    Close      & 187.7    & 22.16               & 0.2638  & -0.9324  \\ 
+    Adj. Close & 186.1    & 21.90               & 0.2907  & -0.9280  \\
+    Volume     & 32704750 & 14179721            & 1.743   & 4.353   
+    \end{tabular}
+    \caption{AAPL Column Statistics}
+    \label{table:part_4:aapl_stats}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|l|l|l|l}
+    Column     & Mean     & Standard Deviation  & Skew    & Kurtosis  \\ \hline
+    Open       & 25000    & 858.8               & -0.3721 & 0.4857   \\ 
+    High       & 25142    & 815.2               & -0.2393 & 0.1181  \\ 
+    Low        & 24846    & 903.3               & -0.4564 & 0.5575  \\ 
+    Close      & 24999    & 859.1               & -0.3801 & 0.4006  \\ 
+    Adj. Close & 24999    & 859.1               & -0.3801 & 0.4006 \\
+    Volume     & 332889442 & 94078038           & 1.739  & 5.857   
+    \end{tabular}
+    \caption{DJI Column Statistics}
+    \label{table:part_4:dji_stats}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|l|l|l|l}
+    Column     & Mean     & Standard Deviation  & Skew    & Kurtosis  \\ \hline
+    Open       & 138.4    & 12.11               & -0.6760 & -0.5852   \\ 
+    High       & 139.4    & 11.91               & -0.6227 & -0.6236  \\ 
+    Low        & 137.3    & 12.20               & -0.7134 & -0.5619  \\ 
+    Close      & 138.3    & 12.02               & -0.6822 & -0.5840  \\ 
+    Adj. Close & 134.9    & 10.67               & -0.8112 & -0.4208 \\
+    Volume     & 5198937 & 3328955           & 3.192  & 11.79   
+    \end{tabular}
+    \caption{IBM Column Statistics}
+    \label{table:part_4:IBM_stats}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|l|l|l|l}
+    Column     & Mean     & Standard Deviation  & Skew    & Kurtosis  \\ \hline
+    Open       & 108.7    & 5.359               & -0.4208 & -0.3225   \\ 
+    High       & 109.6    & 5.202               & -0.3762 & -0.5441  \\ 
+    Low        & 107.6    & 5.432               & -0.3775 & -0.3775  \\ 
+    Close      & 108.6    & 5.300               & -0.3748 & -0.3965  \\ 
+    Adj. Close & 107.2    & 4.833               & -0.3444 & -0.1054 \\
+    Volume     & 14700689 & 5349770           & 1.693  & 4.430  
+    \end{tabular}
+    \caption{JPM Column Statistics}
+    \label{table:part_4:JPM_stats}
+\end{table}

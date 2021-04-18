@@ -1,0 +1,83 @@
+\chapter{Portfolio Optimization}
+\section{Adaptive minimum-variance portfolio optimization}
+\subsection{Optimal Portfolio Derivation}
+
+In this section we are asked to solve the Lagrangian optimization: 
+\[\mathcal{L}(\mathbf{w}, \mathbf{C}, \lambda) = \frac{1}{2}\mathbf{w}^T\mathbf{C}\mathbf{w} -  \lambda(\mathbf{w}^T \mathbf{1} - 1) \] 
+
+Solving this equation allows to construct a minimum variance portfolio, since $\mathbf{w}$ represents the weights which is what we would like to solve for, $\frac{1}{2}\mathbf{w}^T\mathbf{C}\mathbf{w}$ represents the variance of the portfolio which is the function we are trying to minimize and $\lambda(\mathbf{w}^T \mathbf{1} - 1)$ is the constraint which states that the sum of all the weights must equal $1$. 
+
+Note $\mathbf{1}$ is a column vector of $1$'s.
+
+Therefore, to solve this the first step is to take the partial derivate of the Lagrangian in respect to $\mathbf{w}$ and $\lambda$.  
+
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial \mathbf{w}} = \mathbf{C}\mathbf{w} - \lambda\mathbf{1}
+\end{equation}  
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial \mathbf{w}} = 0 \Rightarrow \mathbf{C}\mathbf{w} - \lambda\mathbf{1} = 0 \Rightarrow \mathbf{w} = \lambda\mathbf{C}^{-1}\mathbf{1}
+    \label{eq:part_3:w_result}
+\end{equation}  
+  
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial \lambda} = \mathbf{w}^T\mathbf{1} - 1
+\end{equation}  
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial \lambda} = 0 \Rightarrow \mathbf{w}^T\mathbf{1} - 1 = 0 \Rightarrow \mathbf{w}^T\mathbf{1} = 1
+    \label{eq:part_3:lamda_diff}
+\end{equation} 
+
+We substitute the result of \autoref{eq:part_3:w_result} into the last result \autoref{eq:part_3:lamda_diff} and solve for $\lambda$
+
+\begin{equation}
+    \mathbf{w} = \lambda\mathbf{C}^{-1}\mathbf{1}
+\end{equation}   
+\begin{equation}
+    (\lambda\mathbf{C}^{-1}\mathbf{1})^T\mathbf{1} = 1 \Rightarrow \lambda\mathbf{1}^T(\mathbf{C}^{-1})^T\mathbf{1} = 1 \Rightarrow \lambda = \frac{1}{\mathbf{1}^T(\mathbf{C}^{-1})^T\mathbf{1}}
+\end{equation} 
+
+Now we can substitute this value of lambda back into \autoref{eq:part_3:w_result} to get $\mathbf{w}_{opt}$
+
+\begin{equation}
+    \mathbf{w}_{opt} = \lambda\mathbf{C}^{-1}\mathbf{1} = \frac{1}{\mathbf{1}^T(\mathbf{C}^{-1})^T\mathbf{1}}\mathbf{C}^{-1}\mathbf{1}
+\end{equation} 
+
+To deduce the variance of a portfolio using $\mathbf{w}_{opt}$ we use the original variance formula: \[\sigma^2 = \mathbf{w}^T\mathbf{C}\mathbf{w}\] 
+
+\[\sigma_{opt}^2 = \mathbf{w}_{opt}^T\mathbf{C}\mathbf{w}_{opt} = \frac{1}{(\mathbf{1}^T(\mathbf{C}^{-1})^T\mathbf{1})^2}(\mathbf{C}^{-1}\mathbf{1})^T\mathbf{C}(\mathbf{C}^{-1}\mathbf{1}) = \frac{1}{(\mathbf{1}^T(\mathbf{C}^{-1})^T\mathbf{1})^2}\mathbf{1}^T(\mathbf{C}^{-1})^T)\mathbf{1} = \frac{1}{\mathbf{1}^T(\mathbf{C}^{-1})^T\mathbf{1}} \]
+
+\subsection{Portfolio Creation}
+
+To evaluate the performance of a minimum variance portfolio we can compare the returns from it to the returns of an equally weighted portfolio. However, to conduct the evaluation fairly the time period from which we calculate the covariance matrix $\mathbf{C}$ cannot be the same as the time period used to compute the returns of the portfolio. The objective of this task is to see if the variances from the past can allow the creation of a profitable portfolio in the future. Therefore, the data set we are using, which contains the returns of 10 stocks over 2 years, into two. The first half contains the first year and will be used to find the covariance matrix, whilst the second half of the data we shall use to evaluate the portfolio.
+
+\autoref{fig:part_3:port_compare} shows the performance of an equally weighted and a minimum variance portfolio. As can be seen, both perform similarly following the same trends and resulting in a return of -0.12 approximately. It should be noted that the minimum variance portfolio did perform marginally better. The actual variance was also 300 times bigger than the theoretical variance. In summary, it seems that we cannot simply use the past covariance and expect to make a profitable portfolio. The minimum variance portfolio performed only slightly better than the equally weighted portfolio suggesting that the variance of the past does not have much effect on the future.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_3/images/SPMLF_59_1.pdf}
+    \caption{Portfolio Comparison}
+    \label{fig:part_3:port_compare}
+\end{figure}
+
+\subsection{Adaptive Minimum Variance Portfolio}
+
+Instead of splitting a time series into two to train and test a model, another option is to calculate the optimal weights for a given day from a window of the previous $M$ days. For example with a window of 4 days, we would calculate the optimal weights for Friday by using the returns from the other weekdays in that week. Using this method we can constantly update the weights and see how far the relationship between past variance and future profit extends.
+
+In this section we will implement the above method and then compare it for different window sizes, $M$.
+
+\autoref{fig:part_3:ws_mvp} shows that lower window sizes correlate to higher returns, with the highest cumulative returns being just under 0.5. A vast improvement over the two previous portfolios, minimum variance and equally weighted, which both had a return of approximately -0.12. The highest cumulative return came from a window size of 12, and \autoref{fig:part_3:best_ws_mvp} shows us the portfolio weights and cumulative returns over time. As can be seen, the weights tend to vary quite drastically and sometimes even go into the negative, which represents shorting a stock, to allow for bigger long positions. Whether this strategy is possible in reality, especially since one must change their position daily, is still not explored properly, however, if we stick simply by the optimization problem presented earlier this is a possible method of getting profitable results. 
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_3/images/SPMLF_62_1.pdf}
+    \caption{Effect of window size on portfolio returns}
+    \label{fig:part_3:ws_mvp}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_3/images/SPMLF_63_0.pdf}
+    \caption{Stats for highest performing window size}
+    \label{fig:part_3:best_ws_mvp}
+\end{figure}
+

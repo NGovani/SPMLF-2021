@@ -1,0 +1,150 @@
+\chapter{Bond Pricing}
+
+\section{Example of Bond Pricing}
+
+\subsection{Investment Returns}
+
+The formula for investment return is: \[ R = I * (1 + \frac{r}{k})^k \], where $R$ is the investment return, $I$ is the initial investment, $r$ is the annual risk-free rate and $k$ is how often the return is paid per year. Assuming $R = 1100$ and $I = 1000$ we can calculate $r$ for different $k$ values by rearranging the formula: \[ r = ((\frac{R}{I})^{\frac{1}{k}} - 1) * k \]  
+  
+\paragraph{a)} $k = 1$, Annual compounding: $ r = 10\%$  
+\paragraph{c)} $k = 2$, Bi-annual compounding: $ r = 9.76\%$
+\paragraph{b)} For continuous compounding we use $ R = I * e^r$, which rearranged gives us, $r = \log \frac{R}{I} = 9.53\% $
+
+
+\subsection{Rate of Interest}
+
+Assume we invest £100 initially, $I = 100$, and that $r = 0.15$ with $k = 12$(monthly compounding). In this case $R = 116.07$. To get the same value with continuous compounding we would need:
+\[r = \log \frac{R}{I} = 14.91\% \]
+
+\subsection{Quarterly Interest}
+
+When, $I = 1000$, $r = 0.12$ and we use continuous compounding, $R = 1127.50$. If we assume this is the final return from a year of investment but with the returns being paid quarterly, we can calculate our new value for $r$, 
+\[r = ((\frac{R}{I})^{\frac{1}{k}} - 1) * k = 12.18\%\]
+Thus, the returns per quarter would be : \$30.45, \$31.38, \$32.33, \$33.32, respectively.
+
+\section{Forward Rates}
+
+\subsection{Forward Rate Calculations}
+\paragraph{a)} Deciding on whether the extra 9\% is worthwhile for the user is dependent on how much they think they can earn in other markets in the second year. If, an individual thinks they are able to earn more than 9\% in a different market they should invest for 1 year at 5\% and then take their profits and invest elsewhere.
+
+\paragraph{b)} Once again, the choice of investment strategies should only be taken after an analysis of other markets is considered. If an arbitrage can be found in other markets then the 1 year at 5\% strategy should be chosen.
+
+\paragraph{c)} The forward rate is the return needed in the 2nd year if one wanted to match the 2 year 7\% strategy after taking the 1 year 5\% strategy. The advantage of such a strategy is that potentially the individual could earn more that 9\%, but they could also earn less. The risk one takes on by becoming dependent on what the rates will actually be in a years time is both the advantage and disadvantage.
+
+\section{Duration of coupon-bearing bonds}
+
+\subsection{Bond Calculations}
+All calculations are based on the table in the coursework documents.
+
+\paragraph{a)} To get the durations, we simply add up the final row in the table.
+Duration = $0.0124+0.0236+0.0337+0.0428+0.0510+0.0583+6.537=6.7595$. 
+
+\paragraph{b)} Since, modifed duration $= \frac{Duration}{1+yield}$ where yield is 5\%, the modifed duration = 6.4376\%. This value is slightly lower than the normal duration.
+
+\paragraph{c)} The modifed duration measures how much the normal duration changes based on the yield it can be used a risk measure to see how this bond will hold up to changing interest rates.
+
+
+\section{Capital Asset Pricing Model (CAPM) and Arbitrage Pricing Theory (APT)}
+
+\subsection{Market Returns}
+Generally, the average market returns stays close to zero as can be seen in \autoref{fig:part_2:market_returns}. Thus, lending to the idea of diversification in order to reduce risk.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_2/images/SPMLF_42_0.pdf}
+    \caption{Market Returns}
+    \label{fig:part_2:market_returns}
+\end{figure}
+
+\subsection{Rolling Betas}
+\label{part_2:betas}
+The beta of a stuck is the ratio between the stock's covariance against the market, and its own variance. The value measures the volatility of the stock and be used to determine how risky an investment would be. As can be seen from \autoref{fig:part_2:market_betas}, the market generally centres itself around the β = 1 line, meaning that any risk in investing into the market can be reduced by diversification. There are some peaks and troughs, but those may generally come from news reports or other external factors. To verify the statistics of the betas, the mean and standard deviation were found which were 1 and 0.7081 respectively.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_2/images/SPMLF_44_1.pdf}
+    \caption{Market Betas}
+    \label{fig:part_2:market_betas}
+\end{figure}
+
+\subsection{Cap-Weighted Market Return}
+
+We now take the returns and weight them according to the proportion of the market cap accounted for by that stock.
+\[ w = \frac{\text{Market cap. of Stock}}{\text{Market cap. Total}} \]
+
+This coefficient lowers the impact of cheaper stocks, which generally are riskier, thus their volatility is shown less in the portfolio. From \autoref{fig:part_2:capm_returns}, we can see that the cap-weighted market returns are still similar to the non-weighted market returns both being bounded between -0.025 and 0.025.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_2/images/SPMLF_46_0.pdf}
+    \caption{CAPM Returns}
+    \label{fig:part_2:capm_returns}
+\end{figure}
+
+\subsection{Cap-Weighted β$_m$ (CAPM β)}
+
+Performing the beta's calculation similar to \autoref{part_2:betas} we can find the CAPM β for all stocks with the resulting data being shown in \autoref{fig:part_2:capm_betas}. The CAPM β has a lower standard deviation, at, 0.6940, than the equally weighted β. This is likely due to the CAPM β reducing the impact of lower value stocks which are usually more risky. As a downside the mean of the betas has also been reduced to 0.9617, suggesting a lower reward in exchange for the lower risk.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_2/images/SPMLF_48_1.pdf}
+    \caption{CAPM Betas}
+    \label{fig:part_2:capm_betas}
+\end{figure}
+
+\subsection{2.4.5 Arbitrage Pricing Theory}
+
+\paragraph{a)} As part of the question we assume that the model $r_i = \alpha + b_{m,i}R_m + b_{s,i}R_s + \epsilon_i$ holds for this portfolio. In order to estimate the parameters $\alpha$, $R_m$ and $R_s$ we reinterpret the model as an Ordinary Least Square problem, and apply a similar solution to that found in \autoref{part_1:optimise}. In this case we have the equations:
+\[r = Bx + \epsilon\] where  
+\[r = \begin{bmatrix} r_1 & r_2 & ... & r_i \end{bmatrix}\]  
+\[B = \begin{bmatrix} 1 & b_{m,1} & b_{s,1} \\ 
+                     1 & b_{m,2} & b_{s,2} \\ 
+                     ... & ... & ...  \\
+                     1 & b_{m,i} & b_{s,i} \\ 
+\end{bmatrix}\] 
+\[x= \begin{bmatrix} \alpha & Rm & Rs \end{bmatrix}\] and  
+\[ \epsilon = \begin{bmatrix} \epsilon_1 & \epsilon_2 & ... & \epsilon_i \end{bmatrix}\] 
+thus assuming we minimize $\epsilon$, the optimal value for $x$ is \[\hat{x} = (B^TB)^{-1}B^Tr\]
+
+\autoref{fig:part_2:APT_Params} shows the estimated values for the parameters derived above
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_2/images/SPMLF_50_1.pdf}
+    \caption{Parameters for cross-sectional regression}
+    \label{fig:part_2:APT_Params}
+\end{figure}
+
+\paragraph{b)} The plot above shows the estimated parameters for the two-factor model we used on this data. As you can see, $a$, has both the highest magnitude and variance suggesting the overall trend of the market has the highest impact on the price of the stock and that the other two parameters were not enough to truly model the data set, but this hypothesis can only be confirmed after analysis on the error terms.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.6\textwidth]{part_2/images/SPMLF_52_1.pdf}
+    \caption{}
+    \label{fig:part_2:returns_v_spec_returns}
+\end{figure}
+
+
+\paragraph{c)} By looking at the correlation between the specific returns, $\epsilon$, and the actual returns, shown in \autoref{fig:part_2:returns_v_spec_returns},  we can deduce the effectiveness of the parameters in the model. The high amounts of correlation shown by the plot below and the fact that the range of both axis is about equal, tell us that the two parameters $R_m$ and $R_s$ cannot fully model the market data. These deductions come from the fact that epsilon can be seen as the error term between the actual returns and the returns calculated by the mode, thus, if epsilon was zero the model would be able to fully predict the market.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_2/images/SPMLF_54_0.pdf}
+    \caption{Epsilon Rolling Covariance Matrix}
+    \label{fig:part_2:covar_matrix}
+\end{figure}
+
+\paragraph{d)} \autoref{fig:part_2:covar_matrix} shows the magnitude and stability of the rolling covariance matrix between $R_m$ and $R_s$. The percentage difference between consecutive matrices is consistently high, sometimes reaching 10000\%, which suggests that the covariance matrix is highly unstable and not useful for future prediction of the market.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.6\textwidth]{part_2/images/SPMLF_56_1.pdf}
+    \caption{}
+    \label{fig:part_2:PCA_apt}
+\end{figure}
+
+\paragraph{e)} PCA is a method of dimensionality reduction by performing an eigenvalue decomposition on a covariance matrix. The eigenvalues obtained show the magnitude of the variance in a direction given by the corresponding eigenvector. Since from previous sections we have deduced that epsilon accounts for the vast majority of the actual return, performing this analysis may give insight into how many more factors are required in order to better model the market data. 
+
+The following conclusions are drawn from \autoref{fig:part_2:PCA_apt}
+
+The first principal component accounts for 7.37\% of the total variance, and the graph below shows that the subsequent PC's fall drastically in their percentage contribution. By the time we are on the 10th PC we are only seeing a percentage contribution of 2.16\%, less than a third of the first PC. However, in order to account for 50\% of the variance we must take into account the highest 20 PCs, and thus it may be worth adding up to 20 additional factors to the model in order to fully encapsulate the data. It should be noted that the real world explanations for these additional factors may be hard to explain, the first PC could potentially model the momentum of premiums or some other factor related to growth.
