@@ -11,3 +11,6 @@ Jarque-Bera
 ARMIA
 modifed
 CAPM
+JPM
+OLS
+shortcode

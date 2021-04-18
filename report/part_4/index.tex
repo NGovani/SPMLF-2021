@@ -1,8 +1,11 @@
 \chapter{Robust Statistics and Non-Linear Models}
+
+This chapter focuses on analysis 3 stocks (AAPL, IBM and JPM) and 1 index (DJI). Since all 4 data sets will be treated the same, the term stock/s is used for all of them, for the sake of simplicity.
+
 \section{Data Import and Exploratory Data analysis}
 \subsection{Stock Statistics}
 
-Tables \ref{table:part_4:aapl_stats}, \ref{table:part_4:dji_stats}, \ref{table:part_4:IBM_stats} and \ref{table:part_4:JPM_stats} show the key summary statistics for their respective stock.
+\Cref{table:part_4:aapl_stats,table:part_4:dji_stats,table:part_4:IBM_stats,table:part_4:JPM_stats} show the key summary statistics for their respective stock.
 \begin{table}[h]
     \centering
     \begin{tabular}{l|l|l|l|l}
@@ -61,4 +64,379 @@ Tables \ref{table:part_4:aapl_stats}, \ref{table:part_4:dji_stats}, \ref{table:p
     \end{tabular}
     \caption{JPM Column Statistics}
     \label{table:part_4:JPM_stats}
+\end{table}
+
+
+\subsection{Histograms and PDFs}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_73_0.pdf}
+    \caption{AAPL Histogram \& PDFs}
+    \label{fig:part_4:aapl_pdf}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_74_0.pdf}
+    \caption{DJI Histogram \& PDFs}
+    \label{fig:part_4:dji_pdf}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_75_0.pdf}
+    \caption{IBM Histogram \& PDFs}
+    \label{fig:part_4:ibm_pdf}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_76_0.pdf}
+    \caption{JPM Histogram \& PDFs}
+    \label{fig:part_4:jpm_pdf}
+\end{figure}
+
+\Cref{fig:part_4:aapl_pdf,fig:part_4:dji_pdf,fig:part_4:ibm_pdf,fig:part_4:jpm_pdf} show the Histograms and PDFs obtained from both the returns and Adj. Close columns for their respective stock.
+
+Both the histograms and the PDFs of the 'Adj. Close' column show a tendency to not be normally distributed, the only exception being the DJI stock. However, this distribution also plateaus at the top and is weirdly skewed to the right, therefore it also would be unjustifiable to call it normally distributed. On the other hand, the distribution of the 1-day returns columns all seem to be normally distributed thus allowing this column to be analysed using methods which assume Gaussian normality.
+
+It should be noted that a kernel density estimation method was used to plot the PDFs of each column.
+
+\subsection{Mean and Median Z Scores}
+
+The purpose of using z-score methods on time series is usually to find anomalies and outliers. Therefore, when it comes to comparing two z-score methods, one using mean and standard deviation whilst the other uses median and median absolute deviation, we must look at two metrics. The first is the methods' ability to find correctly identify outliers, and the other is the methods' robustness against outliers. In this first part we look at the first metric.
+
+Assuming that the data possess contains no outliers we can see, from  \cref{fig:part_4:z_score_aapl,fig:part_4:z_score_dji,fig:part_4:z_score_jpm,fig:part_4:z_score_ibm}, that the mean z-score method does a better job of keeping the signal within the bounds of the z-score analysis, since mean takes into account all values in the window it's much better able to respond to quick changes. On the other hand, the median method is able to follow the general trend but occasionally allows the signal to escape the bounds potentially causing a misidentification of an outlier.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_78_0.pdf}
+    \caption{AAPL Z-Score Graphs}
+    \label{fig:part_4:z_score_aapl}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_79_0.pdf}
+    \caption{DJI Z-Score Graphs}
+    \label{fig:part_4:z_score_dji}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_80_0.pdf}
+    \caption{JPM Z-Score Graphs}
+    \label{fig:part_4:z_score_jpm}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_81_0.pdf}
+    \caption{IBM Z-Score Graphs}
+    \label{fig:part_4:z_score_ibm}
+\end{figure}
+
+\subsection{Introduction of outliers}
+
+We now introduce outliers into the data set to check the robustness of the method. From \cref{fig:part_4:z_score_aapl_out,fig:part_4:z_score_dji_out,fig:part_4:z_score_jpm_out,fig:part_4:z_score_ibm_out}, we can see that both methods are capable of catching the synthetic outliers however the z-score of the mean is much heavily affected by the anomalous data point. The median method, however, keeps a tight bound around the signal even with the presence of an outlier in the window. This makes sense due to median being a much more robust statistic, and thus offers a trade-off for those potentially using the z-score method. One can opt to choose the mean in order to get less false positives, but with a higher risk of false negatives due to means higher sensitivity. The opposite also being true for the median alternative.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_84_0.pdf}
+    \caption{AAPL Z-Score Graphs w/ outliers}
+    \label{fig:part_4:z_score_aapl_out}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_85_0.pdf}
+    \caption{DJI Z-Score Graphs w/ outliers}
+    \label{fig:part_4:z_score_dji_out}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_86_0.pdf}
+    \caption{JPM Z-Score Graphs w/ outliers}
+    \label{fig:part_4:z_score_jpm_out}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_87_0.pdf}
+    \caption{IBM Z-Score Graphs w/ outliers}
+    \label{fig:part_4:z_score_ibm_out}
+\end{figure}
+
+\subsection{Box Plots for Adj Close}
+
+The box plots in \autoref{fig:part_4:box_plots} show us the distribution of the entire 'Adj Close' column for each stock. The box plot can give us insight into the distribution of the closing value, showing us the skew, the IRQ and total range of the column. A stock with a large range, but a small IRQ such as IBM suggest low risk, but when something unlikely does happen the value changes greatly. Other observations be made, but they would be similar to the ones made by looking at the PDF or histogram.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_89_0.pdf}
+    \caption{Box Plots for Adj Close, All Stocks}
+    \label{fig:part_4:box_plots}
+\end{figure}
+
+\section{Robust Estimators}
+
+\subsection{Custom Estimators}
+
+\begin{lstlisting}[caption={Custom Python Estimators},captionpos=b,language=Python]
+def MedianEstimator(series):
+    tmp = series.sort_values()
+    median = tmp[round(tmp.size/2)]
+    return median
+
+def IQREstimator(series):
+    tmp = series.sort_values()
+    Q1 = tmp[round(tmp.size/4)]
+    Q3 = tmp[round(3*tmp.size/4)]
+    return (Q3-Q1)
+
+def MADEstimator(series):
+    median = MedianEstimator(series)
+    diff = abs(series-median)
+    MAD = MedianEstimator(deviatons)
+    return MAD
+\end{lstlisting}
+
+\subsection{Complexity of Estimators}
+Median:    
+Sorting — $O(nlog(n))$  
+Access — $O(1)$ — Negligible  
+
+IRQ:  
+Sorting — $O(nlog(n))$  
+Access 1 — $O(1)$ — Negligible  
+Access 2 — $O(1)$ — Negligible  
+
+MAD:  
+Median Function: $O(nlog(n))$   
+Calculate Diff: $O(n)$  
+Median Function: $O(nlog(n))$ 
+
+The MAD estimator takes the longest time computationally speaking.
+
+\subsection{Breakdown Points of Estimators}
+
+Since estimators calculate some underlying statistics based on data, they are prone to error if the data itself is contaminated. The breakdown point of an estimator is the number of data points that can be changed/contaminated before the statistic changes by an arbitrarily large amount. Since the median takes the middle point of a sorted list, up to 50\% of the data points can be contaminated before the median will drastically change. Since MAD also uses the median estimator to calculate its value it also has a breakdown point of 50\%. IRQ, on the other hand, has a breakdown of 25\% since after that point either the first quarter value, or the last quarter value will have changed drastically.
+
+\section{Robust and OLS Regression}
+
+\subsection{Regression onto DJI}
+
+\autoref{fig:part_4:regression} shows the 1-day returns of each stock regressed against the 1-day returns of DJI. DJI is not shown as it would be unnecessary bloat of information.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_94_0.pdf}
+    \caption{Returns of Stocks regressed onto DJI returns}
+    \label{fig:part_4:regression}
+\end{figure}
+
+\subsection{Huber Regression}
+In this section we use the Huber Regression instead of OLS. \autoref{fig:part_4:h_regression} shows the result.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_96_0.pdf}
+    \caption{Returns of Stocks regressed onto DJI returns, using Huber Regression}
+    \label{fig:part_4:h_regression}
+\end{figure}
+
+\subsection{Errors and Outliers}
+
+It should be noted that a Huber Regression(HR) is equal to an Ordinary Least Squares(OLS) Regression when the difference in values are small. Knowing this, we can see why the error on JPM is the same when using both methods, since JPM and DJI are likely very similar, or follow similar trends, the HR method defaults to using OLS. For the other two tickers HR performs marginally worse with it only performing 0.07\% worse on IBM and 9\% worse on AAPL. \autoref{table:part_4:error} shows the absolute error from both methods on all 3 stocks.
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{l|l|l|l}
+           &  AAPL      & IBM          & JPM     \\ \hline
+        OLS &  0.0001798 & 0.000140431  & 7.57723e-05       \\
+        HR &  0.0001971 & 0.000140535  & 7.57723e-05
+    \end{tabular}
+    \caption{Regression Error of OLS and HR}
+    \label{table:part_4:error}
+\end{table}
+
+After adding 4 outliers to the data set, we reperformed the regression and found the new errors, as shown in \autoref{table:part_4:error_out}. These values were the exact same.
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{l|l|l|l}
+           &  AAPL      & IBM          & JPM     \\ \hline
+        OLS &  0.0001798 & 0.000140431  & 7.57723e-05       \\
+        HR &  0.0001971 & 0.000140535  & 7.57723e-05
+    \end{tabular}
+    \caption{Regression Error of OLS and HR, w/ outliers}
+    \label{table:part_4:error_out}
+\end{table}
+
+\section{Robust Trading Strategies}
+\subsection{Moving Average Crossover(MAC)}
+
+We now move onto trading strategies and for this section we were asked to implement a Moving Average Crossover strategy. Put simply, at the point on the time series when the 20-day moving average became larger than the 50-day moving average we would buy the stock. And, when the 20-day average became smaller we would sell. Thus, we were interested in finding the cross-over points and the regions to buy and sell. 
+
+In the first section we use the mean to calculate the rolling averages. \autoref{fig:part_4:mac_mean} shows us the regions in which we would buy or sell. The intersections of the green and red regions is where we would be buying or selling. When entering a green region we buy and when entering a red region we sell. 
+
+What is of interest to us isn't necessarily the profitability of these strategies but rather the robustness. To test this we must add outliers. \autoref{fig:part_4:mac_mean_out} shows us the same method but on a data set with outlier. 
+
+Unfortunately, it is difficult to compare the results using graphs, thus, tables of the crossover points is shown in \cref{table:part_4:aapl_cp_mean,table:part_4:ibm_cp_mean,table:part_4:dji_cp_mean,table:part_4:jpm_cp_mean}. In two of the stocks additional orders have been added, and the existing orders have been consistently moved either forward or backwards by amounts ranging from one day to two weeks.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_101_0.pdf}
+    \caption{Moving Crossover Strategy for Each Stock}
+    \label{fig:part_4:mac_mean}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_105_0.pdf}
+    \caption{Moving Crossover Strategy for Each Stock, w/ outliers}
+    \label{fig:part_4:mac_mean_out}
+\end{figure}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{l|l}
+    Normal            & With Outliers     \\ \hline
+    2018-07-11 (Sell) & 2018-07-06 (Sell) \\
+    2018-07-24 (Buy)  & 2018-07-25 (Buy)  \\
+    2018-10-29 (Sell) & 2018-10-25 (Sell) \\
+    2019-01-24 (Buy)  & 2019-02-08 (Buy)  \\
+                      & 2019-02-12 (Sell) \\
+                      & 2019-02-20 (Buy) 
+
+    \end{tabular}
+    \caption{AAPL Crossover points, Mean Average}
+    \label{table:part_4:aapl_cp_mean}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{l|l}
+    Normal            & With Outliers     \\ \hline
+    2018-07-25 (Buy)  & 2018-07-25 (Buy) \\
+    2018-10-19 (Sell) & 2018-10-18 (Sell)  \\
+    2019-01-24 (Buy)  & 2019-01-14 (Buy) \\
+                      & 2019-01-15 (Sell)  \\
+                      & 2019-01-24 (Buy) 
+
+    \end{tabular}
+    \caption{IBM Crossover points, Mean Average}
+    \label{table:part_4:ibm_cp_mean}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{l|l}
+    Normal            & With Outliers     \\ \hline
+    2018-07-10 (Sell) & 2018-07-03 (Sell) \\
+    2018-07-26 (Buy)  & 2018-07-26 (Buy)  \\
+    2018-10-23 (Sell) & 2018-10-19 (Sell) \\
+    2019-01-31 (Buy)  & 2019-01-30 (Buy)  
+
+    \end{tabular}
+    \caption{DJI Crossover points, Mean Average}
+    \label{table:part_4:dji_cp_mean}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{l|l}
+    Normal            & With Outliers     \\ \hline
+    2018-06-12 (Sell) & 2018-06-12 (Sell) \\
+    2018-07-27 (Buy)  & 2018-07-27 (Buy)  \\
+    2018-09-27 (Sell) & 2018-10-12 (Sell) \\
+    2019-02-01 (Buy)  & 2019-01-31 (Buy)  
+
+    \end{tabular}
+    \caption{JPM Crossover points, Mean Average}
+    \label{table:part_4:jpm_cp_mean}
+\end{table}
+
+\subsection{Median MAC}
+
+Since, we have already established median as being a more robust statistic, we now use it to calculate the moving average and implement the same strategy as the previous section. \Cref{fig:part_4:mac_median,fig:part_4:mac_median_out} show the MAC strategy implemented on the 4 stocks, without and with outliers respectively. Once again, comparisons are difficult, so tables of crossover points are shown in \cref{table:part_4:aapl_cp_med,table:part_4:ibm_cp_med,table:part_4:dji_cp_med,table:part_4:jpm_cp_med}. Except for JPM, the crossover points are nearly all the same, with one only being displaced by a single day. In the case of JPM, the original crossover points are maintains, however addition Buy-Sell order pairs have been added due to the averages being corrupted too far. However, on the whole, using median as the average statistic provides a more robust strategy than using mean.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_108_0.pdf}
+    \caption{Moving Crossover Strategy for Each Stock, using Median}
+    \label{fig:part_4:mac_median}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{part_4/images/SPMLF_112_0.pdf}
+    \caption{Moving Crossover Strategy for Each Stock, using Median, w/ outliers}
+    \label{fig:part_4:mac_median_out}
+\end{figure}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{l|l}
+    Normal            & With Outliers     \\ \hline
+    2018-07-03 (Sell) & 2018-07-03 (Sell) \\
+    2018-07-23 (Buy)  & 2018-07-23 (Buy)  \\
+    2018-10-29 (Sell) & 2018-10-29 (Sell) \\
+    2019-02-12 (Buy)  & 2019-02-11 (Buy)  
+
+    \end{tabular}
+    \caption{AAPL Crossover points, Median Average}
+    \label{table:part_4:aapl_cp_med}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{l|l}
+    Normal            & With Outliers     \\ \hline
+    2018-06-13 (Buy) & 2018-06-13 (Buy) \\
+    2018-06-20 (Sell)  & 2018-06-20 (Sell)  \\
+    2018-07-24 (Buy) & 2018-07-24 (Buy) \\
+    2018-10-23 (Sell)  & 2018-10-23 (Sell)  \\
+    2019-01-24 (Buy)  & 2019-01-24 (Buy)
+
+    \end{tabular}
+    \caption{IBM Crossover points, Median Average}
+    \label{table:part_4:ibm_cp_med}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{l|l}
+    Normal            & With Outliers     \\ \hline
+    2018-07-05 (Sell) & 2018-07-05 (Sell) \\
+    2018-07-24 (Buy)  & 2018-07-24 (Buy)  \\
+    2018-10-24 (Sell) & 2018-10-24 (Sell) \\
+    2019-02-01 (Buy)  & 2019-02-01 (Buy)  
+
+    \end{tabular}
+    \caption{DJI Crossover points, Median Average}
+    \label{table:part_4:dji_cp_med}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{l|l}
+    Normal            & With Outliers     \\ \hline
+    2018-06-15 (Sell) & 2018-06-15 (Sell) \\
+    2018-07-27 (Buy)  & 2018-07-27 (Buy)  \\
+    2018-09-17 (Sell) & 2018-09-17 (Sell) \\
+                      & 2018-09-24 (Buy)  \\
+                      & 2018-09-25 (Sell)  \\
+    2018-10-09 (Buy)  & 2018-10-09 (Buy)  \\
+    2018-10-18 (Sell) & 2018-10-18 (Sell)  \\
+    2018-11-30 (Buy)  & 2018-11-30 (Buy)  \\
+    2018-12-12 (Sell) & 2018-12-12 (Sell) \\
+                      & 2018-12-14 (Buy) \\
+                      & 2018-12-17 (Sell) \\
+    2019-01-30 (Buy)  & 2019-01-30 (Buy)
+    \end{tabular}
+    \caption{JPM Crossover points, Median Average}
+    \label{table:part_4:jpm_cp_med}
 \end{table}
